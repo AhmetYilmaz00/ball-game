@@ -15,7 +15,7 @@ namespace Game.Scripts.Scene
 
         #region Unity Methods
 
-        void Start()
+        private void Start()
         {
             LoadSceneAsync(otherSceneName);
         }
@@ -33,6 +33,7 @@ namespace Game.Scripts.Scene
 
         public void ExitGame()
         {
+            Application.Quit();
         }
 
         #endregion
