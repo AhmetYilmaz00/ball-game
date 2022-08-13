@@ -1,3 +1,4 @@
+using System;
 using Game.Data_SO;
 using TMPro;
 using UnityEngine;
@@ -15,8 +16,8 @@ namespace Game.Scripts.CharacterScripts
         [SerializeField] private TextMeshProUGUI hpTMP;
         [SerializeField] private float timer;
         [SerializeField] private Slider hpSliderBar;
-
-        [SerializeField] private bool _isTriggerObstacle;
+        [SerializeField] private AudioSource bottleHealthSound;
+        private bool _isTriggerObstacle;
 
         #endregion
 
@@ -34,6 +35,11 @@ namespace Game.Scripts.CharacterScripts
             {
                 timer += Time.deltaTime;
             }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            BottleHealthTriggerEnter(other);
         }
 
         private void OnTriggerStay(Collider collider)
@@ -72,10 +78,27 @@ namespace Game.Scripts.CharacterScripts
             timer = 0;
         }
 
+        private void BottleHealthTriggerEnter(Collider coll)
+        {
+            if (!coll.CompareTag("BottleHealth"))
+            {
+                return;
+            }
+
+            UpdateHp(true);
+            bottleHealthSound.Play();
+            coll.gameObject.SetActive(false);
+        }
+
         private void UpdateHp()
         {
+            if (hp > 100)
+            {
+                hp = 100;
+            }
+
             hpTMP.text = hp.ToString();
-            hpSliderBar.value = hp / 100;
+            hpSliderBar.value = hp / gameSettings.maxHp;
         }
 
         private void UpdateHp(bool addHp)
@@ -83,6 +106,7 @@ namespace Game.Scripts.CharacterScripts
             if (addHp)
             {
                 hp += gameSettings.amountPickUpHp;
+                UpdateHp();
             }
             else
             {
