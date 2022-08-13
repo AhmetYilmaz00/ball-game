@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b0ce5b163cdf841bfa4506357972dd, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  gameSceneName: GameScene
+  maxHp: 100
+  initialHp: 75
+  amountPickUpHp: 25
+  subtractObstacleHp: 10
