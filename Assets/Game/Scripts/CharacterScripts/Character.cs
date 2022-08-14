@@ -17,6 +17,8 @@ namespace Game.Scripts.CharacterScripts
         [SerializeField] private float timer;
         [SerializeField] private Slider hpSliderBar;
         [SerializeField] private AudioSource bottleHealthSound;
+        [SerializeField] private ParticleSystem addHealthParticle;
+
         private bool _isTriggerObstacle;
 
         #endregion
@@ -87,6 +89,7 @@ namespace Game.Scripts.CharacterScripts
 
             UpdateHp(true);
             bottleHealthSound.Play();
+            addHealthParticle.Play();
             coll.gameObject.SetActive(false);
         }
 
