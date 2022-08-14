@@ -1,5 +1,7 @@
 using System;
+using System.Linq.Expressions;
 using Game.Data_SO;
+using Game.Events;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,14 +14,18 @@ namespace Game.Scripts.CharacterScripts
         #region Fields
 
         [SerializeField] private GameSettings gameSettings;
-        [SerializeField] private float hp;
         [SerializeField] private TextMeshProUGUI hpTMP;
-        [SerializeField] private float timer;
         [SerializeField] private Slider hpSliderBar;
         [SerializeField] private AudioSource bottleHealthSound;
         [SerializeField] private ParticleSystem addHealthParticle;
+        [SerializeField] private OnCollisionBallFlagPlatform OnCollisionBallFlagPlatform;
 
+        private float _hp;
+        private float _timer;
         private bool _isTriggerObstacle;
+        private string _obstacleNearTag;
+        private float _amountPickUpHp;
+        private float _subtractObstacleHp;
 
         #endregion
 
@@ -27,15 +33,18 @@ namespace Game.Scripts.CharacterScripts
 
         private void Awake()
         {
-            hp = gameSettings.initialHp;
+            _hp = gameSettings.initialHp;
             UpdateHp();
+            _obstacleNearTag = "ObstacleNear";
+            _amountPickUpHp = gameSettings.amountPickUpHp;
+            _subtractObstacleHp = gameSettings.subtractObstacleHp;
         }
 
         void Update()
         {
             if (_isTriggerObstacle)
             {
-                timer += Time.deltaTime;
+                _timer += Time.deltaTime;
             }
         }
 
@@ -46,38 +55,64 @@ namespace Game.Scripts.CharacterScripts
 
         private void OnTriggerStay(Collider collider)
         {
-            ObstacleWallTriggerStay(collider);
+            ObstacleWallNearTriggerStay(collider);
         }
 
         private void OnTriggerExit(Collider collider)
         {
-            ObstacleWallTriggerExit(collider);
+            ObstacleWallNearTriggerExit(collider);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            ObstacleWallCollisionEnter(collision);
+            FlagPlatformCollisionEnter(collision);
         }
 
         #endregion
 
         #region Methods
 
-        private void ObstacleWallTriggerStay(Collider coll)
+        private void ObstacleWallNearTriggerStay(Collider coll)
         {
-            if (!coll.CompareTag("Obstacle"))
+            if (!coll.CompareTag(_obstacleNearTag))
             {
                 return;
             }
 
-            UpdateHp(false);
+            UpdateHp(false, true);
         }
 
-        private void ObstacleWallTriggerExit(Collider coll)
+        private void ObstacleWallCollisionEnter(Collision coll)
         {
-            if (!coll.CompareTag("Obstacle"))
+            if (!coll.gameObject.CompareTag("ObstacleWall"))
+            {
+                return;
+            }
+
+            UpdateHp(false, false);
+        }
+
+        private void FlagPlatformCollisionEnter(Collision coll)
+        {
+            if (!coll.gameObject.CompareTag("FlagPlatform"))
+            {
+                return;
+            }
+
+            OnCollisionBallFlagPlatform.Invoke();
+        }
+
+
+        private void ObstacleWallNearTriggerExit(Collider coll)
+        {
+            if (!coll.CompareTag(_obstacleNearTag))
             {
                 return;
             }
 
             _isTriggerObstacle = false;
-            Debug.Log("71.Satırrr");
-            timer = 0;
+            _timer = 0;
         }
 
         private void BottleHealthTriggerEnter(Collider coll)
@@ -87,7 +122,7 @@ namespace Game.Scripts.CharacterScripts
                 return;
             }
 
-            UpdateHp(true);
+            UpdateHp(true, true);
             bottleHealthSound.Play();
             addHealthParticle.Play();
             coll.gameObject.SetActive(false);
@@ -95,20 +130,20 @@ namespace Game.Scripts.CharacterScripts
 
         private void UpdateHp()
         {
-            if (hp > 100)
+            if (_hp > 100)
             {
-                hp = 100;
+                _hp = 100;
             }
 
-            hpTMP.text = hp.ToString();
-            hpSliderBar.value = hp / gameSettings.maxHp;
+            hpTMP.text = _hp.ToString();
+            hpSliderBar.value = _hp / gameSettings.maxHp;
         }
 
-        private void UpdateHp(bool addHp)
+        private void UpdateHp(bool addHp, bool isTrigger)
         {
             if (addHp)
             {
-                hp += gameSettings.amountPickUpHp;
+                _hp += _amountPickUpHp;
                 UpdateHp();
             }
             else
@@ -116,13 +151,21 @@ namespace Game.Scripts.CharacterScripts
                 _isTriggerObstacle = true;
             }
 
-            if (timer >= 1)
+            if (isTrigger && _timer >= 1)
             {
-                timer = 0;
-                Debug.Log("95.Satırrr");
-                hp -= gameSettings.subtractObstacleHp;
-                UpdateHp();
+                _timer = 0;
+                ReduceHp();
             }
+            else if (!isTrigger)
+            {
+                ReduceHp();
+            }
+        }
+
+        private void ReduceHp()
+        {
+            _hp -= _subtractObstacleHp;
+            UpdateHp();
         }
 
         #endregion

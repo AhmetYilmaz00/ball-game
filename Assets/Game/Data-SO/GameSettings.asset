@@ -16,3 +16,5 @@ MonoBehaviour:
   initialHp: 75
   amountPickUpHp: 25
   subtractObstacleHp: 10
+  minDisanceBallFlag: 13
+  flagMinMaxValue: {x: 1.8, y: 4.4}

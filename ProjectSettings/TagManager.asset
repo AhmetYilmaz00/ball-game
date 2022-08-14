@@ -4,8 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Obstacle
   - BottleHealth
+  - Missile
+  - ObstacleWall
+  - ObstacleNear
+  - FlagPlatform
   layers:
   - Default
   - TransparentFX
