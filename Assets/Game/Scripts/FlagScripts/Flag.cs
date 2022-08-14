@@ -24,7 +24,8 @@ namespace Game.Scripts.FlagScripts
         void Start()
         {
             _distance.x = ball.position.z;
-            _distance.y = _distance.x + Vector3.Distance(ball.position, moveableFlag.position);
+            _distance.y = (_distance.x + Vector3.Distance(ball.position, moveableFlag.position)) *
+                gameSettings.minRequiredPercentComplete / 100;
             _flagMinMaxValue = gameSettings.flagMinMaxValue;
         }
 
@@ -45,6 +46,13 @@ namespace Game.Scripts.FlagScripts
                 if (_resultReMap < _flagMinMaxValue.x)
                 {
                     return _flagMinMaxValue.x;
+                }
+
+                if (_resultReMap > _flagMinMaxValue.y)
+                {
+                    _gameFinish = true;
+
+                    return _flagMinMaxValue.y;
                 }
             }
 

@@ -10,5 +10,6 @@ namespace Game.Data_SO
         [SerializeField] public float amountPickUpHp;
         [SerializeField] public float subtractObstacleHp;
         [SerializeField] public Vector2 flagMinMaxValue;
+        [SerializeField] public float minRequiredPercentComplete;
     }
 }
