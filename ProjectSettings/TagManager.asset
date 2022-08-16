@@ -9,6 +9,8 @@ TagManager:
   - ObstacleWall
   - ObstacleNear
   - FlagPlatform
+  - Obstacle
+  - LevelFinishButton
   layers:
   - Default
   - TransparentFX

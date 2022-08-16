@@ -1,15 +1,20 @@
+using System;
+using Game.Scripts.Managers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game.Scripts.Scene
 {
-    public class MainMenu : SceneSettings
+    public class MainMenu : SceneController
     {
         #region Fields
 
-        [SerializeField] private string currentSceneName;
-        [SerializeField] private string otherSceneName;
+        [SerializeField] private string menuSceneName;
+        [SerializeField] private string gameSceneName;
+        [SerializeField] private string nextLevelSceneName;
 
         private UnLoadScene _unLoadScene = new();
+        private bool _isNextlevel;
 
         #endregion
 
@@ -17,7 +22,7 @@ namespace Game.Scripts.Scene
 
         private void Start()
         {
-            LoadSceneAsync(otherSceneName);
+            LoadSceneAsync(gameSceneName);
         }
 
         #endregion
@@ -26,14 +31,22 @@ namespace Game.Scripts.Scene
 
         public void StartGame()
         {
-            _unLoadScene.currentSceneName = currentSceneName;
-            _unLoadScene.otherSceneName = otherSceneName;
-            UnLoadSceneAsync(_unLoadScene, gameObject);
+            _unLoadScene.currentSceneName = menuSceneName;
+            _unLoadScene.otherSceneName = gameSceneName;
+            MoveGameObjectToScene(_unLoadScene, GameManager.Instance.gameObject);
+            MoveGameObjectToScene(_unLoadScene, gameObject);
+            GameManager.Instance.isStartGame = true;
+            UnLoadSceneAsync(_unLoadScene);
         }
 
         public void ExitGame()
         {
             Application.Quit();
+        }
+
+        public void NextLevel()
+        {
+            LoadScene(nextLevelSceneName);
         }
 
         #endregion

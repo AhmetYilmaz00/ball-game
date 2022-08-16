@@ -1,11 +1,10 @@
-using System;
-using System.Linq.Expressions;
 using Game.Data_SO;
-using Game.Events;
+using Game.Scripts.Managers;
+using Game.Scripts.Scene;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
-using Image = UnityEngine.UI.Image;
 
 namespace Game.Scripts.CharacterScripts
 {
@@ -13,19 +12,16 @@ namespace Game.Scripts.CharacterScripts
     {
         #region Fields
 
-        [SerializeField] private GameSettings gameSettings;
-        [SerializeField] private TextMeshProUGUI hpTMP;
-        [SerializeField] private Slider hpSliderBar;
-        [SerializeField] private AudioSource bottleHealthSound;
-        [SerializeField] private ParticleSystem addHealthParticle;
-        [SerializeField] private OnCollisionBallFlagPlatform OnCollisionBallFlagPlatform;
+        [SerializeField] private GameManager gameManager;
 
-        private float _hp;
-        private float _timer;
+        [SerializeField] private UnityEvent onUpgradeHp;
+        [SerializeField] private UnityEvent onObstacleTriggerEnter;
+        [SerializeField] private UnityEvent onObstacleTriggerExit;
+        [SerializeField] private UnityEvent onDowngradeHp;
+
         private bool _isTriggerObstacle;
         private string _obstacleNearTag;
-        private float _amountPickUpHp;
-        private float _subtractObstacleHp;
+        private bool _isNextlevel;
 
         #endregion
 
@@ -33,55 +29,54 @@ namespace Game.Scripts.CharacterScripts
 
         private void Awake()
         {
-            _hp = gameSettings.initialHp;
-            UpdateHp();
-            _obstacleNearTag = "ObstacleNear";
-            _amountPickUpHp = gameSettings.amountPickUpHp;
-            _subtractObstacleHp = gameSettings.subtractObstacleHp;
+            Initialize();
         }
 
         void Update()
         {
-            if (_isTriggerObstacle)
-            {
-                _timer += Time.deltaTime;
-            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
             BottleHealthTriggerEnter(other);
+            ObstacleWallNearTriggerEnter(other);
         }
 
-        private void OnTriggerStay(Collider collider)
+        private void OnTriggerStay(Collider other)
         {
-            ObstacleWallNearTriggerStay(collider);
+            LevelFinishButtonTriggerStay(other);
+            //TODO: KALSIN 
         }
 
-        private void OnTriggerExit(Collider collider)
+        private void OnTriggerExit(Collider other)
         {
-            ObstacleWallNearTriggerExit(collider);
+            ObstacleWallNearTriggerExit(other);
         }
 
         private void OnCollisionEnter(Collision collision)
         {
             ObstacleWallCollisionEnter(collision);
-            FlagPlatformCollisionEnter(collision);
         }
 
         #endregion
 
         #region Methods
 
-        private void ObstacleWallNearTriggerStay(Collider coll)
+        private void Initialize()
+        {
+            _obstacleNearTag = "ObstacleNear";
+        }
+
+        private void ObstacleWallNearTriggerEnter(Collider coll)
         {
             if (!coll.CompareTag(_obstacleNearTag))
             {
                 return;
             }
 
-            UpdateHp(false, true);
+            onObstacleTriggerEnter.Invoke();
         }
+
 
         private void ObstacleWallCollisionEnter(Collision coll)
         {
@@ -90,17 +85,7 @@ namespace Game.Scripts.CharacterScripts
                 return;
             }
 
-            UpdateHp(false, false);
-        }
-
-        private void FlagPlatformCollisionEnter(Collision coll)
-        {
-            if (!coll.gameObject.CompareTag("FlagPlatform"))
-            {
-                return;
-            }
-
-            OnCollisionBallFlagPlatform.Invoke();
+            onDowngradeHp.Invoke();
         }
 
 
@@ -111,8 +96,7 @@ namespace Game.Scripts.CharacterScripts
                 return;
             }
 
-            _isTriggerObstacle = false;
-            _timer = 0;
+            onObstacleTriggerExit.Invoke();
         }
 
         private void BottleHealthTriggerEnter(Collider coll)
@@ -122,50 +106,23 @@ namespace Game.Scripts.CharacterScripts
                 return;
             }
 
-            UpdateHp(true, true);
-            bottleHealthSound.Play();
-            addHealthParticle.Play();
+            onUpgradeHp.Invoke();
+
             coll.gameObject.SetActive(false);
         }
 
-        private void UpdateHp()
+        private void LevelFinishButtonTriggerStay(Collider coll)
         {
-            if (_hp > 100)
+            if (!coll.CompareTag("LevelFinishButton") )
             {
-                _hp = 100;
+                return;
             }
-
-            hpTMP.text = _hp.ToString();
-            hpSliderBar.value = _hp / gameSettings.maxHp;
-        }
-
-        private void UpdateHp(bool addHp, bool isTrigger)
-        {
-            if (addHp)
+           if (!_isNextlevel && GameManager.Instance.levelFinishButtonActive )
             {
-                _hp += _amountPickUpHp;
-                UpdateHp();
+                _isNextlevel = true;
+                var mainMenu = FindObjectOfType<MainMenu>();
+                mainMenu.NextLevel();
             }
-            else
-            {
-                _isTriggerObstacle = true;
-            }
-
-            if (isTrigger && _timer >= 1)
-            {
-                _timer = 0;
-                ReduceHp();
-            }
-            else if (!isTrigger)
-            {
-                ReduceHp();
-            }
-        }
-
-        private void ReduceHp()
-        {
-            _hp -= _subtractObstacleHp;
-            UpdateHp();
         }
 
         #endregion

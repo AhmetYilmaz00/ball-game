@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Game.Scripts.CharacterMove
+namespace Game.Scripts.CharacterScripts
 {
     public class Follower : MonoBehaviour
     {

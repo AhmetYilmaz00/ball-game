@@ -11,5 +11,10 @@ namespace Game.Data_SO
         [SerializeField] public float subtractObstacleHp;
         [SerializeField] public Vector2 flagMinMaxValue;
         [SerializeField] public float minRequiredPercentComplete;
+        [SerializeField] public float flagColorTransitionTime;
+        [SerializeField] public float gameFinishCameraOrthoSize;
+        [SerializeField] public float cameraOrthoSizeTransitionTime;
+
+// TODO: Gamemanager yap boolla oyun başladı mı bitti mi onları tut .
     }
 }

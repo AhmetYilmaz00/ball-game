@@ -18,3 +18,6 @@ MonoBehaviour:
   subtractObstacleHp: 10
   flagMinMaxValue: {x: 1.8, y: 4.4}
   minRequiredPercentComplete: 75
+  flagColorTransitionTime: 1
+  gameFinishCameraOrthoSize: 7.5
+  cameraOrthoSizeTransitionTime: 1

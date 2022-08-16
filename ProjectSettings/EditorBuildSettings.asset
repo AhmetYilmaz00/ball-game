@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Game/Scenes/GameScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Game/Scenes/NextLevelScene.unity
+    guid: 264e7fcba7b0a77458ba32c377c04171
   m_configObjects: {}
