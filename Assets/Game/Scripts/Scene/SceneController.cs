@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace Game.Scripts.Scene
 {
-    public class SceneController : MonoBehaviour
+    public class SceneController : MonoSingleton<SceneController>
     {
         #region Fields
 
@@ -23,7 +23,7 @@ namespace Game.Scripts.Scene
 
         public void LoadScene(string sceneName)
         {
-            SceneManager.LoadScene(sceneName);
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }
 
         protected void UnLoadSceneAsync(UnLoadScene unLoadScene)
@@ -34,6 +34,11 @@ namespace Game.Scripts.Scene
         protected void MoveGameObjectToScene(UnLoadScene unLoadScene, GameObject thisGameObject)
         {
             SceneManager.MoveGameObjectToScene(thisGameObject, SceneManager.GetSceneByName(unLoadScene.otherSceneName));
+        }
+
+        public string GetActiveScene()
+        {
+            return SceneManager.GetActiveScene().name;
         }
 
         #endregion

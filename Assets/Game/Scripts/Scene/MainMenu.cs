@@ -22,7 +22,7 @@ namespace Game.Scripts.Scene
 
         private void Start()
         {
-            LoadSceneAsync(gameSceneName);
+            ControlActiveScene();
         }
 
         #endregion
@@ -48,9 +48,20 @@ namespace Game.Scripts.Scene
 
         public void NextLevel()
         {
-            GameManager.Instance.isStartGame = false;
             GameManager.Instance.isFinishGame = true;
             LoadScene(nextLevelSceneName);
+        }
+
+        private void ControlActiveScene()
+        {
+            if (GetActiveScene() == menuSceneName)
+            {
+                LoadSceneAsync(gameSceneName);
+            }
+            else if (GetActiveScene() == nextLevelSceneName)
+            {
+                GameManager.Instance.isStartGame = true;
+            }
         }
 
         #endregion
