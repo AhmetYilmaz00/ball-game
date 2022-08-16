@@ -5,7 +5,7 @@ namespace Game.Scripts.Managers
 {
     public class GameManager : MonoSingleton<GameManager>
     {
-         public bool levelFinishButtonActive;
+        public bool levelFinishButtonActive;
 
         public bool isStartGame;
         public bool isFinishGame;
@@ -36,9 +36,9 @@ namespace Game.Scripts.Managers
         {
             isStartGame = true;
         }
+
         public void FinishGame()
         {
-            isStartGame = false;
             isFinishGame = true;
         }
     }

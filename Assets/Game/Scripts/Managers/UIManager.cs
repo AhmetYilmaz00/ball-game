@@ -1,17 +1,21 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game.Scripts.Managers
 {
-    public class UIManager : MonoBehaviour
+    public class UIManager : MonoSingleton<UIManager>
     {
         #region Fields
 
         [SerializeField] private TextMeshProUGUI hpTMP;
         [SerializeField] private Slider hpSliderBar;
+        [SerializeField] private GameObject hpGameObject;
 
         #endregion
+
+       
 
         #region Methods
 
@@ -19,7 +23,11 @@ namespace Game.Scripts.Managers
         {
             hpTMP.text = _hp.ToString();
             hpSliderBar.value = _hp / maxHp;
-            //Todo: ui manager yap. dethealth ı oraya yaz.
+        }
+
+        public void HpGameObjectActive()
+        {
+            hpGameObject.SetActive(true);
         }
 
         #endregion

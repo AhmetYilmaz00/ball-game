@@ -36,6 +36,8 @@ namespace Game.Scripts.Scene
             MoveGameObjectToScene(_unLoadScene, GameManager.Instance.gameObject);
             MoveGameObjectToScene(_unLoadScene, gameObject);
             GameManager.Instance.isStartGame = true;
+            UIManager.Instance.HpGameObjectActive();
+
             UnLoadSceneAsync(_unLoadScene);
         }
 
@@ -46,6 +48,8 @@ namespace Game.Scripts.Scene
 
         public void NextLevel()
         {
+            GameManager.Instance.isStartGame = false;
+            GameManager.Instance.isFinishGame = true;
             LoadScene(nextLevelSceneName);
         }
 

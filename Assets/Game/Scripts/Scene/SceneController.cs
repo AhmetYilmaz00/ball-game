@@ -23,7 +23,7 @@ namespace Game.Scripts.Scene
 
         public void LoadScene(string sceneName)
         {
-            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
+            SceneManager.LoadScene(sceneName);
         }
 
         protected void UnLoadSceneAsync(UnLoadScene unLoadScene)

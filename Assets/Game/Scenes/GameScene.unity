@@ -1083,7 +1083,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.75, y: 1}
   m_AnchoredPosition: {x: 0, y: 3}
   m_SizeDelta: {x: -6, y: -12}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -1140,7 +1140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &181902721
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1461,7 +1461,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameSettings: {fileID: 11400000, guid: db97b9c1e9527d04a9aaf1f8af03e9c0, type: 2}
-  uiManager: {fileID: 1293833880}
 --- !u!4 &282683244
 Transform:
   m_ObjectHideFlags: 0
@@ -5581,6 +5580,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpTMP: {fileID: 2074859112}
   hpSliderBar: {fileID: 144496870}
+  hpGameObject: {fileID: 181902720}
 --- !u!23 &1296319973
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8628,7 +8628,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7803469, y: 1}
+    m_SensorSize: {x: 1.7788461, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

@@ -1,4 +1,5 @@
 using System;
+using Game.Scripts.Managers;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 
@@ -19,24 +20,27 @@ namespace Game.Scripts.CharacterMove
 
         private void FixedUpdate()
         {
-            if (Input.GetKey(KeyCode.W))
+            if (GameManager.Instance.isStartGame)
             {
-                _rigidbody.AddForce(movementForce * Vector3.forward);
-            }
+                if (Input.GetKey(KeyCode.W))
+                {
+                    _rigidbody.AddForce(movementForce * Vector3.forward);
+                }
 
-            if (Input.GetKey(KeyCode.S))
-            {
-                _rigidbody.AddForce(movementForce * Vector3.back);
-            }
+                if (Input.GetKey(KeyCode.S))
+                {
+                    _rigidbody.AddForce(movementForce * Vector3.back);
+                }
 
-            if (Input.GetKey(KeyCode.D))
-            {
-                _rigidbody.AddForce(movementForce * Vector3.right);
-            }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    _rigidbody.AddForce(movementForce * Vector3.right);
+                }
 
-            if (Input.GetKey(KeyCode.A))
-            {
-                _rigidbody.AddForce(movementForce * Vector3.left);
+                if (Input.GetKey(KeyCode.A))
+                {
+                    _rigidbody.AddForce(movementForce * Vector3.left);
+                }
             }
         }
 

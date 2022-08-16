@@ -7,7 +7,6 @@ namespace Game.Scripts.CharacterScripts
     public class HealthController : MonoBehaviour
     {
         [SerializeField] private GameSettings gameSettings;
-        [SerializeField] private UIManager uiManager;
 
         private float _hp;
         private float _maxHp;
@@ -47,7 +46,7 @@ namespace Game.Scripts.CharacterScripts
                 _hp = 100;
             }
 
-            uiManager.SetHealthUI(_hp, _maxHp);
+            UIManager.Instance.SetHealthUI(_hp, _maxHp);
         }
 
         public void UpgradeHp()
