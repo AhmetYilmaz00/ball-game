@@ -1,5 +1,6 @@
 using Game.Data_SO;
 using Game.Scripts.Managers;
+using Game.Scripts.Scene;
 using UnityEngine;
 
 namespace Game.Scripts.CharacterScripts
@@ -8,12 +9,13 @@ namespace Game.Scripts.CharacterScripts
     {
         [SerializeField] private GameSettings gameSettings;
 
-        private float _hp;
+        public float hp;
         private float _maxHp;
         private float _amountPickUpHp;
         private float _subtractObstacleHp;
         private bool _isTriggerObstacle;
         private float _obstacleTriggerTimer;
+        private bool _isFailGame;
 
         void Start()
         {
@@ -32,7 +34,7 @@ namespace Game.Scripts.CharacterScripts
 
         private void Initialize()
         {
-            _hp = gameSettings.initialHp;
+            hp = gameSettings.initialHp;
             _maxHp = gameSettings.maxHp;
             _amountPickUpHp = gameSettings.amountPickUpHp;
             _subtractObstacleHp = gameSettings.subtractObstacleHp;
@@ -41,17 +43,27 @@ namespace Game.Scripts.CharacterScripts
 
         public void SetHealth()
         {
-            if (_hp > 100)
+            if (hp > 100)
             {
-                _hp = 100;
+                hp = 100;
+            }
+            else if (hp <= 0)
+            {
+                hp = 0;
+                if (!_isFailGame)
+                {
+                    _isFailGame = true;
+                    var mainMenu = FindObjectOfType<MainMenu>();
+                    mainMenu.FailScene();
+                }
             }
 
-            UIManager.Instance.SetHealthUI(_hp, _maxHp);
+            UIManager.Instance.SetHealthUI(hp, _maxHp);
         }
 
         public void UpgradeHp()
         {
-            _hp += _amountPickUpHp;
+            hp += _amountPickUpHp;
             SetHealth();
         }
 
@@ -79,7 +91,7 @@ namespace Game.Scripts.CharacterScripts
 
         public void DowngradeHp()
         {
-            _hp -= _subtractObstacleHp;
+            hp -= _subtractObstacleHp;
             SetHealth();
         }
     }

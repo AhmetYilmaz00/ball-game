@@ -847,6 +847,8 @@ MonoBehaviour:
   menuSceneName: MenuScene
   gameSceneName: GameScene
   nextLevelSceneName: NextLevelScene
+  failSceneName: FailScene
+  gameData: {fileID: 0}
 --- !u!4 &1175836846
 Transform:
   m_ObjectHideFlags: 0
@@ -1175,5 +1177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892400dcc0dbdf5409b551130bdb4b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelFinishButtonActive: 0
   isStartGame: 0
   isFinishGame: 0
+  gameTime: 0

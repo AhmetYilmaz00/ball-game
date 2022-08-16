@@ -29,7 +29,9 @@ namespace Game.Scripts.Managers
         {
             hpGameObject.SetActive(true);
         }
-
+        
+       
+        
         #endregion
     }
 }

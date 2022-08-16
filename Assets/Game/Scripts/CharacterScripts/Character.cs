@@ -18,6 +18,7 @@ namespace Game.Scripts.CharacterScripts
         [SerializeField] private UnityEvent onObstacleTriggerEnter;
         [SerializeField] private UnityEvent onObstacleTriggerExit;
         [SerializeField] private UnityEvent onDowngradeHp;
+        [SerializeField] private UnityEvent onSaveData;
 
         private bool _isTriggerObstacle;
         private string _obstacleNearTag;
@@ -121,6 +122,7 @@ namespace Game.Scripts.CharacterScripts
             {
                 _isNextlevel = true;
                 var mainMenu = FindObjectOfType<MainMenu>();
+                onSaveData.Invoke();
                 mainMenu.NextLevel();
             }
         }

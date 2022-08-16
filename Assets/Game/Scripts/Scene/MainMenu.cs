@@ -12,6 +12,8 @@ namespace Game.Scripts.Scene
         [SerializeField] private string menuSceneName;
         [SerializeField] private string gameSceneName;
         [SerializeField] private string nextLevelSceneName;
+        [SerializeField] private string failSceneName;
+        [SerializeField] private GameData gameData;
 
         private UnLoadScene _unLoadScene = new();
         private bool _isNextlevel;
@@ -52,6 +54,18 @@ namespace Game.Scripts.Scene
             LoadScene(nextLevelSceneName);
         }
 
+        public void RestartGame()
+        {
+            LoadScene(menuSceneName);
+        }
+
+
+        public void FailScene()
+        {
+            GameManager.Instance.isStartGame = false;
+            LoadSceneAsync(failSceneName);
+        }
+
         private void ControlActiveScene()
         {
             if (GetActiveScene() == menuSceneName)
@@ -61,6 +75,7 @@ namespace Game.Scripts.Scene
             else if (GetActiveScene() == nextLevelSceneName)
             {
                 GameManager.Instance.isStartGame = true;
+                gameData.LoadHpAndTime();
             }
         }
 
