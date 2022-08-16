@@ -33,9 +33,6 @@ namespace Game.Scripts.CharacterScripts
             Initialize();
         }
 
-        void Update()
-        {
-        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -46,7 +43,6 @@ namespace Game.Scripts.CharacterScripts
         private void OnTriggerStay(Collider other)
         {
             LevelFinishButtonTriggerStay(other);
-            //TODO: KALSIN 
         }
 
         private void OnTriggerExit(Collider other)
@@ -114,11 +110,12 @@ namespace Game.Scripts.CharacterScripts
 
         private void LevelFinishButtonTriggerStay(Collider coll)
         {
-            if (!coll.CompareTag("LevelFinishButton") )
+            if (!coll.CompareTag("LevelFinishButton"))
             {
                 return;
             }
-           if (!_isNextlevel && GameManager.Instance.levelFinishButtonActive )
+
+            if (!_isNextlevel && GameManager.Instance.levelFinishButtonActive)
             {
                 _isNextlevel = true;
                 var mainMenu = FindObjectOfType<MainMenu>();

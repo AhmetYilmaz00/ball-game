@@ -22,7 +22,6 @@ namespace Game.Scripts.CharacterScripts
             Initialize();
         }
 
-        // Update is called once per frame
         void Update()
         {
             if (_isTriggerObstacle)
